@@ -1,0 +1,18 @@
+[Unit]
+# Demon에 대한 설명
+Description=Inference Webserver Service
+# Network demon이 초기화 된 후 동작, webserver는 network에 의존적이기 때문
+After=network-online.target
+
+[Service]
+# root 권한으로 동작, FPGA device driver를 사용하기 위해 권한 상승 필요
+# User=root
+ExecStartPre=/bin/sleep 30
+# 작업을 수행할 working directory
+WorkingDirectory=/home/xilinx/FPGAHandWritingDection
+# 웹서버 코드를 수행할 명령
+ExecStart=/usr/bin/python3 WebServer.py
+
+[Install]
+# 수행을 위해 network demon의 완료를 대기함
+WantedBy=network-online.target
